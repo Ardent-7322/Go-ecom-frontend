@@ -1,7 +1,6 @@
 import React from "react";
 import { ProductModel } from "../../types";
 import placeholderImage from "../../images/place_holder.jpg";
-import { AppCSS } from "../../components";
 import { useNavigate } from "react-router-dom";
 import { formatUsdAsInr } from "../../utils/currency";
 
@@ -18,34 +17,19 @@ const ProductCard: React.FC<{ item: ProductModel }> = ({ item }) => {
     <div
       onClick={() => navigate(`/product-details/${item.id}`)}
       style={{
-        width: 220,
-        minWidth: 220,
-        borderRadius: 16,
+        width: 200,
+        minWidth: 200,
+        borderRadius: 10,
         background: "#fff",
-        border: `1px solid ${AppCSS.BORDER}`,
+        border: "1px solid #EBEBEB",
         cursor: "pointer",
         overflow: "hidden",
-        transition: "all 0.25s ease",
-        position: "relative",
         flexShrink: 0,
       }}
-      onMouseEnter={e => {
-        const el = e.currentTarget as HTMLDivElement;
-        el.style.transform = "translateY(-6px)";
-        el.style.boxShadow = "0 16px 40px rgba(108,60,225,0.16)";
-        el.style.borderColor = AppCSS.PRIMARY;
-      }}
-      onMouseLeave={e => {
-        const el = e.currentTarget as HTMLDivElement;
-        el.style.transform = "";
-        el.style.boxShadow = "";
-        el.style.borderColor = AppCSS.BORDER;
-      }}
     >
-      {/* Image area */}
       <div style={{
-        width: "100%", height: 180,
-        background: AppCSS.GRAD_CARD,
+        width: "100%", height: 160,
+        background: "#F7F7F7",
         display: "flex", alignItems: "center", justifyContent: "center",
         overflow: "hidden",
       }}>
@@ -57,51 +41,32 @@ const ProductCard: React.FC<{ item: ProductModel }> = ({ item }) => {
         />
       </div>
 
-      {/* Stock badge */}
-      {item.stock !== undefined && (
-        <div style={{
-          position: "absolute", top: 10, right: 10,
-          background: item.stock > 0 ? AppCSS.GREEN : AppCSS.DANGER,
-          color: "#fff", fontSize: 10, fontWeight: 700,
-          padding: "3px 8px", borderRadius: 20, letterSpacing: 0.5,
-        }}>
-          {item.stock > 0 ? "IN STOCK" : "SOLD OUT"}
-        </div>
-      )}
-
-      {/* Info */}
-      <div style={{ padding: "14px 16px 16px" }}>
+      <div style={{ padding: "12px 14px 14px" }}>
         <p style={{
-          fontSize: 14, fontWeight: 600, color: AppCSS.BLACK,
+          fontSize: 13, fontWeight: 600, color: "#1a1a1a",
           margin: 0, marginBottom: 4,
           overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap",
         }}>
           {item.name}
         </p>
         <p style={{
-          fontSize: 12, color: AppCSS.GRAY, margin: 0, marginBottom: 10,
+          fontSize: 11, color: "#888", margin: 0, marginBottom: 10,
           overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap",
         }}>
-          {item.description || "Premium quality product"}
+          {item.description || "—"}
         </p>
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-          <span style={{
-            fontSize: 18, fontWeight: 800, color: AppCSS.PRIMARY,
-            fontFamily: "'Sora', sans-serif",
-          }}>
+          <span style={{ fontSize: 15, fontWeight: 700, color: "#1a1a1a" }}>
             {formatUsdAsInr(Number(item.price))}
           </span>
-          <button
-            style={{
-              background: AppCSS.GRAD_PRIMARY,
-              color: "#fff", border: "none",
-              borderRadius: 20, padding: "6px 14px",
-              fontSize: 12, fontWeight: 700, cursor: "pointer",
-              fontFamily: "'Plus Jakarta Sans', sans-serif",
-            }}
-          >
-            View
-          </button>
+          {item.stock !== undefined && (
+            <span style={{
+              fontSize: 10, fontWeight: 600,
+              color: item.stock > 0 ? "#16a34a" : "#dc2626",
+            }}>
+              {item.stock > 0 ? "In stock" : "Sold out"}
+            </span>
+          )}
         </div>
       </div>
     </div>
@@ -113,13 +78,12 @@ export const TopPrducts: React.FC<TopProductsProps> = ({ products, title, subtit
     return (
       <div style={{
         width: "92%", background: "#fff",
-        borderRadius: 20, padding: "40px",
-        textAlign: "center", color: AppCSS.GRAY,
-        border: `1px solid ${AppCSS.BORDER}`,
+        borderRadius: 10, padding: "40px",
+        textAlign: "center", color: "#888",
+        border: "1px solid #EBEBEB",
       }}>
-        <p style={{ fontSize: 40, marginBottom: 12 }}>🛍️</p>
-        <p style={{ fontSize: 16, fontWeight: 600 }}>No products yet</p>
-        <p style={{ fontSize: 14, marginTop: 6 }}>Check back soon for new arrivals!</p>
+        <p style={{ fontSize: 15, fontWeight: 600, margin: 0 }}>No products found</p>
+        <p style={{ fontSize: 13, marginTop: 6, color: "#aaa" }}>Check back soon for new arrivals.</p>
       </div>
     );
   }
@@ -128,35 +92,28 @@ export const TopPrducts: React.FC<TopProductsProps> = ({ products, title, subtit
     <div style={{
       width: "92%",
       background: "#fff",
-      borderRadius: 20,
-      padding: "28px 28px 32px",
-      border: `1px solid ${AppCSS.BORDER}`,
-      boxShadow: "0 4px 24px rgba(108,60,225,0.06)",
+      borderRadius: 10,
+      padding: "24px",
+      border: "1px solid #EBEBEB",
     }}>
-      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 24 }}>
-        <div>
-          <p style={{
-            fontSize: 22, fontWeight: 800, margin: 0,
-            color: AppCSS.BLACK, fontFamily: "'Sora', sans-serif",
-          }}>
-            {title || "Top Products"}
-          </p>
-          <p style={{ fontSize: 13, color: AppCSS.GRAY, margin: "4px 0 0" }}>
-            {subtitle || "Handpicked favourites just for you"}
-          </p>
+      {(title || subtitle) && (
+        <div style={{ marginBottom: 20 }}>
+          {title && (
+            <p style={{ fontSize: 16, fontWeight: 700, margin: 0, color: "#1a1a1a" }}>
+              {title}
+            </p>
+          )}
+          {subtitle && (
+            <p style={{ fontSize: 12, color: "#888", margin: "4px 0 0" }}>
+              {subtitle}
+            </p>
+          )}
         </div>
-        <a href="#" style={{
-          fontSize: 13, fontWeight: 600, color: AppCSS.PRIMARY,
-          textDecoration: "none",
-          padding: "6px 16px", borderRadius: 20,
-          border: `1px solid ${AppCSS.PRIMARY}`,
-          transition: "all 0.2s",
-        }}>View all</a>
-      </div>
+      )}
 
       <div style={{
-        display: "flex", flexDirection: "row", gap: 16,
-        overflowX: "auto", paddingBottom: 8,
+        display: "flex", flexDirection: "row", gap: 14,
+        overflowX: "auto", paddingBottom: 4,
         scrollbarWidth: "thin",
       }}>
         {products.map(item => (

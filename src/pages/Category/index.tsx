@@ -14,9 +14,10 @@ const CategoryPage: React.FC = () => {
     const { products, categories } = useAppSelector(state => state.productReducer);
 
     useEffect(() => {
-        if (!categories.length) onFetchCategories();
-        if (!products.length) onFetchProducts();
-    }, []);
+        // Always refetch when category changes
+        onFetchCategories();
+        onFetchProducts();
+    }, [id]);
 
     const onFetchProducts = async () => {
         const { data } = await FetchProducts();
@@ -29,42 +30,54 @@ const CategoryPage: React.FC = () => {
     };
 
     const selectedCategory = useMemo(
-        () => categories.find(cat => String(cat._id) === String(id)),
+        () => categories.find(cat =>
+            String(cat._id) === String(id) || String(cat.id) === String(id)
+        ),
         [categories, id]
     );
 
     const filteredProducts = useMemo(() => {
-        if (!id) return [];
+        if (!id || !products.length) return [];
 
         return products.filter(product => {
-            const productCategoryId = String(product.category_id);
-            if (productCategoryId === String(id)) return true;
+            const catId = String(product.category_id).trim();
+            const paramId = String(id).trim();
 
-            if (selectedCategory && Number(productCategoryId) === Number(selectedCategory.id)) return true;
+            if (catId === paramId) return true;
+
+            if (selectedCategory) {
+                if (catId === String(selectedCategory._id).trim()) return true;
+                if (catId === String(selectedCategory.id).trim()) return true;
+            }
 
             return false;
         });
     }, [products, id, selectedCategory]);
 
     return (
-        <div style={{ width: "92%", margin: "20px auto 60px" }}>
+        <div style={{ width: "92%", margin: "24px auto 60px" }}>
             <button
                 onClick={() => navigate("/")}
                 style={{
                     cursor: "pointer",
-                    border: "1px solid #E8E4F5",
+                    border: "1px solid #ddd",
                     background: "#fff",
-                    borderRadius: 8,
-                    padding: "8px 12px",
+                    borderRadius: 6,
+                    padding: "7px 16px",
                     fontWeight: 600,
-                    marginBottom: 16,
+                    fontSize: 13,
+                    marginBottom: 20,
+                    color: "#333",
                 }}
             >
-                Back
+                ← Back
             </button>
 
-            <h2 style={{ margin: "0 0 16px", fontSize: 20 }}>
+            <h2 style={{ margin: "0 0 20px", fontSize: 20, fontWeight: 700, color: "#1a1a1a" }}>
                 {selectedCategory ? selectedCategory.name : "Category"}
+                <span style={{ fontSize: 13, fontWeight: 400, color: "#888", marginLeft: 10 }}>
+                    ({filteredProducts.length} products)
+                </span>
             </h2>
 
             <TopPrducts products={filteredProducts} />

@@ -6,17 +6,18 @@ import axios from "axios";
 export const AddToCartApi = async (productId: number, qty: number = 1) => {
   try {
     const api = axiosAuth();
-    const response = await api.post(`${BASE_URL}/cart`, {
+    // Send both field name variants to be safe with different backend versions
+    const response = await api.post(`${BASE_URL}/buyer/cart`, {
       product_id: productId,
-       productId,
       qty,
-       item_qty: qty,
+      item_qty: qty,
     });
     return response.data;
   } catch (error: any) {
-    console.log(error);
+    console.log("AddToCart error:", error?.response?.data || error);
     return {
-       message: error?.response?.data?.message || "error occured",
+      message: error?.response?.data?.message || "Failed to add to cart",
+      error: true,
     };
   }
 };
@@ -26,12 +27,12 @@ export const FetchCartItemsApi = async (
 ): Promise<ResponseModel> => {
   try {
     const auth = axiosAuth();
-    const response = await auth.get(`${BASE_URL}/cart`);
+    const response = await auth.get(`${BASE_URL}/buyer/cart`);
     return response.data;
-  } catch (error) {
-    console.log(error);
+  } catch (error: any) {
+    console.log("FetchCart error:", error?.response?.data || error);
     return {
-      message: "error occured",
+      message: error?.response?.data?.message || "Failed to fetch cart",
     };
   }
 };

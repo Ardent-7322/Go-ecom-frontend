@@ -1,8 +1,6 @@
 /* eslint-disable react/jsx-no-undef */
-import React, { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import React from "react";
 import { AppCSS, Lbl, Spacer } from "../../components";
-
 import { Elements } from "@stripe/react-stripe-js";
 import {
   Appearance,
@@ -30,23 +28,14 @@ export const MakePayment: React.FC<MakePaymentProps> = ({
   onFailed,
 }) => {
   const appearance: Appearance = {
-    theme: "flat",
+    theme: "stripe",
     variables: {
       fontWeightNormal: "500",
-      borderRadius: "2px",
-      colorBackground: "white",
-      colorPrimary: "#DF1B41",
-      colorPrimaryText: "white",
-      spacingGridRow: "15px",
-    },
-    rules: {
-      ".Label": {
-        marginBottom: "6px",
-      },
-      ".Tab, .Input, .Block": {
-        boxShadow: "0px 3px 10px rgba(18, 42, 66, 0.08)",
-        padding: "12px",
-      },
+      borderRadius: "6px",
+      colorBackground: "#ffffff",
+      colorPrimary: "#1a1a1a",
+      colorPrimaryText: "#ffffff",
+      spacingGridRow: "16px",
     },
   };
 
@@ -55,42 +44,12 @@ export const MakePayment: React.FC<MakePaymentProps> = ({
     appearance,
   };
 
-  const stripePromise = () => {
-    if (pk) {
-      return loadStripe(pk);
-    }
-    return null;
-  };
-
-  const displayPaymentForm = () => {
-    if (pk && clientSecret) {
-      return (
-        <Elements options={options} stripe={stripePromise()}>
-          <CheckoutForm onHandleReturn={onHandleReturnUrl} />
-        </Elements>
-      );
-    } else {
-      return (
-        <ColDiv
-          style={{
-            alignItems: "center",
-          }}
-        >
-          <Lbl title="Loading payment..." />
-        </ColDiv>
-      );
-    }
-  };
+  const stripePromise = pk ? loadStripe(pk) : null;
 
   const onHandleReturnUrl = async (response: PaymentIntentResult) => {
-    console.log("POST PAYMENT RESPONSE", response);
     const { error, paymentIntent } = response;
-
-    if (paymentIntent) {
-      if (paymentIntent.status === "succeeded") {
-        console.log("Successed");
-        onSuccess(response.paymentIntent.id);
-      }
+    if (paymentIntent && paymentIntent.status === "succeeded") {
+      onSuccess(response.paymentIntent.id);
     } else {
       console.log("Payment Failed!", error);
       onFailed(error);
@@ -98,18 +57,52 @@ export const MakePayment: React.FC<MakePaymentProps> = ({
   };
 
   return (
-    <ColDiv
-      style={{
-        justifyContent: "center",
-        alignItems: "center",
-      }}
-    >
-      <Spacer size={4} direction="col" />
-      <p style={{ textAlign: "center" }}>
-        Amount to Pay : {formatUsdAsInr(totalAmount)}
-      </p>
-      <Spacer size={4} direction="col" />
-      {displayPaymentForm()}
+    <ColDiv style={{ justifyContent: "center", alignItems: "center", padding: "20px 0" }}>
+      {/* Order summary card */}
+      <div style={{
+        width: 420, background: "#fff",
+        border: "1px solid #EBEBEB", borderRadius: 10,
+        padding: "24px 28px", marginBottom: 24,
+      }}>
+        <p style={{ fontSize: 13, color: "#888", margin: "0 0 8px", fontWeight: 500, textTransform: "uppercase", letterSpacing: 0.5 }}>
+          Order Summary
+        </p>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+          <p style={{ fontSize: 16, fontWeight: 600, color: "#1a1a1a", margin: 0 }}>Total Amount</p>
+          <p style={{ fontSize: 22, fontWeight: 700, color: "#1a1a1a", margin: 0 }}>
+            {formatUsdAsInr(totalAmount)}
+          </p>
+        </div>
+
+        {/* Stripe test mode notice */}
+        <div style={{
+          marginTop: 16, padding: "10px 14px",
+          background: "#FFF9E6", border: "1px solid #FDE68A",
+          borderRadius: 6, fontSize: 12, color: "#92400e",
+        }}>
+          <strong>Test Mode:</strong> Use card <code>4242 4242 4242 4242</code>, any future date, any CVC.
+        </div>
+      </div>
+
+      {/* Stripe Payment form */}
+      <div style={{
+        width: 420, background: "#fff",
+        border: "1px solid #EBEBEB", borderRadius: 10,
+        padding: "24px 28px",
+      }}>
+        <p style={{ fontSize: 13, color: "#888", margin: "0 0 20px", fontWeight: 500, textTransform: "uppercase", letterSpacing: 0.5 }}>
+          Payment Details
+        </p>
+        {pk && clientSecret ? (
+          <Elements options={options} stripe={stripePromise}>
+            <CheckoutForm onHandleReturn={onHandleReturnUrl} />
+          </Elements>
+        ) : (
+          <ColDiv style={{ alignItems: "center", padding: "20px 0" }}>
+            <Lbl title="Loading payment..." />
+          </ColDiv>
+        )}
+      </div>
     </ColDiv>
   );
 };
