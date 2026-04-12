@@ -1,10 +1,12 @@
 import React from "react";
 import { CategoryModel } from "../../types";
 import { AppCSS } from "../../components";
-import { useNavigate } from "react-router-dom";
+
 
 interface CategoryProps {
   cats: CategoryModel[];
+  selectedCategoryId?: string;
+  onSelectCategory?: (categoryId?: string) => void;
 }
 
 const CAT_COLORS = [
@@ -18,8 +20,7 @@ const CAT_COLORS = [
 
 const CAT_ICONS = ["🛍️", "👗", "📱", "🏠", "⚽", "🎨", "📚", "🎵", "🌿", "💎"];
 
-export const CategorySlider: React.FC<CategoryProps> = ({ cats }) => {
-  const navigate = useNavigate();
+export const CategorySlider: React.FC<CategoryProps> = ({ cats, selectedCategoryId, onSelectCategory }) => {
 
   if (!Array.isArray(cats) || cats.length === 0) return null;
 
@@ -38,6 +39,23 @@ export const CategorySlider: React.FC<CategoryProps> = ({ cats }) => {
       }}>
         Browse Categories
       </p>
+      <div style={{ marginBottom: 16 }}>
+        <button
+          onClick={() => onSelectCategory ? onSelectCategory(undefined) : {}}
+          style={{
+            border: `1px solid ${selectedCategoryId ? AppCSS.BORDER : AppCSS.PRIMARY}`,
+            background: selectedCategoryId ? "#fff" : AppCSS.PRIMARY_LIGHT,
+            color: selectedCategoryId ? AppCSS.GRAY_DARK : AppCSS.PRIMARY,
+            padding: "6px 14px",
+            borderRadius: 999,
+            fontSize: 12,
+            fontWeight: 700,
+            cursor: "pointer",
+          }}
+        >
+          All Products
+        </button>
+      </div>
 
       <div style={{
         display: "flex", flexDirection: "row", gap: 14,
@@ -51,7 +69,7 @@ export const CategorySlider: React.FC<CategoryProps> = ({ cats }) => {
           return (
             <div
               key={item._id}
-              onClick={() => navigate(`/category/${item._id}`)}
+              onClick={() => onSelectCategory ? onSelectCategory(item._id) : {}}
               style={{
                 display: "flex", flexDirection: "column",
                 alignItems: "center", gap: 10,
@@ -83,6 +101,9 @@ export const CategorySlider: React.FC<CategoryProps> = ({ cats }) => {
                 display: "-webkit-box", WebkitLineClamp: 2,
                 WebkitBoxOrient: "vertical" as any,
                 width: "100%",
+                border: selectedCategoryId === item._id ? `1px solid ${AppCSS.PRIMARY}` : "1px solid transparent",
+                borderRadius: 999,
+                padding: "2px 8px",
               }}>
                 {item.name}
               </span>

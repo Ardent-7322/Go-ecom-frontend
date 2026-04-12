@@ -12,6 +12,7 @@ import {
 } from "@stripe/stripe-js";
 import { CheckoutForm } from "./PaymentForm";
 import { ColDiv } from "../../components/Misc/misc.styled";
+import { formatUsdAsInr } from "../../utils/currency";
 
 interface MakePaymentProps {
   clientSecret: string;
@@ -105,7 +106,7 @@ export const MakePayment: React.FC<MakePaymentProps> = ({
     >
       <Spacer size={4} direction="col" />
       <p style={{ textAlign: "center" }}>
-        Your Card will Charge : ${totalAmount}
+        Amount to Pay : {formatUsdAsInr(totalAmount)}
       </p>
       <Spacer size={4} direction="col" />
       {displayPaymentForm()}

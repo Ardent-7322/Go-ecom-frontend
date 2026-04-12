@@ -8,13 +8,15 @@ export const AddToCartApi = async (productId: number, qty: number = 1) => {
     const api = axiosAuth();
     const response = await api.post(`${BASE_URL}/cart`, {
       product_id: productId,
+       productId,
       qty,
+       item_qty: qty,
     });
     return response.data;
-  } catch (error) {
+  } catch (error: any) {
     console.log(error);
     return {
-      message: "error occured",
+       message: error?.response?.data?.message || "error occured",
     };
   }
 };

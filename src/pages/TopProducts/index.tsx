@@ -3,9 +3,12 @@ import { ProductModel } from "../../types";
 import placeholderImage from "../../images/place_holder.jpg";
 import { AppCSS } from "../../components";
 import { useNavigate } from "react-router-dom";
+import { formatUsdAsInr } from "../../utils/currency";
 
 interface TopProductsProps {
   products: ProductModel[];
+  title?: string;
+  subtitle?: string;
 }
 
 const ProductCard: React.FC<{ item: ProductModel }> = ({ item }) => {
@@ -86,7 +89,7 @@ const ProductCard: React.FC<{ item: ProductModel }> = ({ item }) => {
             fontSize: 18, fontWeight: 800, color: AppCSS.PRIMARY,
             fontFamily: "'Sora', sans-serif",
           }}>
-            ${Number(item.price).toFixed(2)}
+            {formatUsdAsInr(Number(item.price))}
           </span>
           <button
             style={{
@@ -105,7 +108,7 @@ const ProductCard: React.FC<{ item: ProductModel }> = ({ item }) => {
   );
 };
 
-export const TopPrducts: React.FC<TopProductsProps> = ({ products }) => {
+export const TopPrducts: React.FC<TopProductsProps> = ({ products, title, subtitle }) => {
   if (!Array.isArray(products) || products.length === 0) {
     return (
       <div style={{
@@ -136,10 +139,10 @@ export const TopPrducts: React.FC<TopProductsProps> = ({ products }) => {
             fontSize: 22, fontWeight: 800, margin: 0,
             color: AppCSS.BLACK, fontFamily: "'Sora', sans-serif",
           }}>
-            Top Products
+            {title || "Top Products"}
           </p>
           <p style={{ fontSize: 13, color: AppCSS.GRAY, margin: "4px 0 0" }}>
-            Handpicked favourites just for you
+            {subtitle || "Handpicked favourites just for you"}
           </p>
         </div>
         <a href="#" style={{

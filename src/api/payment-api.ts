@@ -9,10 +9,10 @@ export const CollectPaymentApi = async (
     const auth = axiosAuth();
     const response = await auth.post(`${BASE_URL}/buyer/payment`);
     return response.data;
-  } catch (error) {
+  } catch (error: any) {
     console.log(error);
     return {
-      message: "error occured",
+      message: error?.response?.data?.message || "error occured",
     };
   }
 };

@@ -1,4 +1,4 @@
-import { ReactNode, useEffect } from "react";
+import { ReactNode, useEffect, useMemo, useState } from "react";
 import { useDispatch } from "react-redux";
 import DealsPage from "../Deals";
 import { CategorySlider } from "../Category/CategorySlider";
@@ -15,6 +15,7 @@ interface LandingPageProps {
 const LandingPage: React.FC<LandingPageProps> = () => {
   const dispatch = useDispatch();
   const { products, categories } = useAppSelector(state => state.productReducer);
+  const [selectedCategoryId, setSelectedCategoryId] = useState<string | undefined>(undefined);
 
   useEffect(() => {
     onFetchCategories();
@@ -31,6 +32,18 @@ const LandingPage: React.FC<LandingPageProps> = () => {
     if (data) dispatch(sellerCategories(data as CategoryModel[]));
   };
 
+  const filteredProducts = useMemo(() => {
+    if (!selectedCategoryId) return products;
+    return (products || []).filter((item) => item.category_id === selectedCategoryId);
+  }, [products, selectedCategoryId]);
+
+  const selectedCategoryName = useMemo(() => {
+    if (!selectedCategoryId) return "All Products";
+    const cat = (categories || []).find((item) => item._id === selectedCategoryId);
+    return cat?.name || "Selected Category";
+  }, [categories, selectedCategoryId]);
+
+
   return (
     <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 20, paddingBottom: 60 }}>
       {/* Hero carousel */}
@@ -39,10 +52,18 @@ const LandingPage: React.FC<LandingPageProps> = () => {
       </div>
 
       {/* Categories */}
-      <CategorySlider cats={categories} />
+      <CategorySlider
+        cats={categories}
+        selectedCategoryId={selectedCategoryId}
+        onSelectCategory={setSelectedCategoryId}
+      />
 
       {/* Products */}
-      <TopPrducts products={products} />
+      <TopPrducts
+        products={filteredProducts}
+        title={selectedCategoryName}
+        subtitle={selectedCategoryId ? "Filtered by your selected category" : "Handpicked favourites just for you"}
+      />
 
       {/* Trust bar */}
       <div style={{
@@ -51,7 +72,7 @@ const LandingPage: React.FC<LandingPageProps> = () => {
         border: "1px solid #E8E4F5", flexWrap: "wrap", gap: 16,
       }}>
         {[
-          { icon: "🚚", title: "Free Shipping", sub: "On orders above $50" },
+          { icon: "🚚", title: "Free Shipping", sub: "On orders above ₹4,000" },
           { icon: "🔒", title: "Secure Payment", sub: "256-bit SSL encryption" },
           { icon: "↩️", title: "Easy Returns", sub: "30-day return policy" },
           { icon: "🎧", title: "24/7 Support", sub: "Always here to help" },

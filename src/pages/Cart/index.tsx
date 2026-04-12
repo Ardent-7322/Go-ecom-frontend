@@ -11,6 +11,7 @@ import ProductPlaceholder from "../../images/product_placeholder.jpg";
 import { CollectPaymentApi } from "../../api/payment-api";
 import { MakePayment } from "../Payment";
 import { ColDiv, RowDiv } from "../../components/Misc/misc.styled";
+import { formatUsdAsInr } from "../../utils/currency";
 
 interface CartProps { }
 
@@ -47,7 +48,11 @@ const CartPage: React.FC<CartProps> = ({ }) => {
     if (data) {
       console.log(data);
       const credential = data as PaymentCredential;
-      setPaymentCredential(credential);
+      if (credential?.secret && credential?.publishableKey) {
+        setPaymentCredential(credential);
+      } else {
+        navigate("/post-order");
+      }
     } else {
       console.log(`Error: ${message}`);
     }
@@ -154,7 +159,7 @@ const CartPage: React.FC<CartProps> = ({ }) => {
                 fontWeight: "600",
               }}
             >
-              ${Number(item.price).toFixed(2)}
+              {formatUsdAsInr(Number(item.price))}
             </p>
           </div>
         </RowDiv>
@@ -217,7 +222,7 @@ const CartPage: React.FC<CartProps> = ({ }) => {
             }}
           >
             <p>Product price</p>
-            <p>${productPrice.toFixed(2)}</p>
+            <p>{formatUsdAsInr(productPrice)}</p>
           </div>
           <div
             style={{
@@ -227,7 +232,7 @@ const CartPage: React.FC<CartProps> = ({ }) => {
             }}
           >
             <p>Tax & Fee</p>
-            <p>${appFee.toFixed(2)}</p>
+            <p>{formatUsdAsInr(appFee)}</p>
           </div>
           <div
             style={{
@@ -239,7 +244,7 @@ const CartPage: React.FC<CartProps> = ({ }) => {
             }}
           >
             <p>Total Amount</p>
-            <p>${getTotal().toFixed(2)}</p>
+            <p>{formatUsdAsInr(getTotal())}</p>
           </div>
         </ColDiv>
       </Stack>

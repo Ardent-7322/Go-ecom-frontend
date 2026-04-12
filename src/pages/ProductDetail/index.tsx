@@ -10,6 +10,7 @@ import ProductPlaceholder from "../../images/place_holder.jpg";
 import { AppCSS, TapButton } from "../../components";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+import { formatUsdAsInr } from "../../utils/currency";
 
 export const ProductDetails = () => {
   let { id } = useParams();
@@ -72,7 +73,7 @@ export const ProductDetails = () => {
         <p style={{ fontSize: 30, fontWeight: "700" }}>{currentProduct.name}</p>
         <p style={{ fontSize: 16, color: "#666", marginTop: 10 }}>{currentProduct.description}</p>
         <p style={{ fontSize: 28, fontWeight: "700", color: AppCSS.ORANGE, marginTop: 16 }}>
-          ${Number(currentProduct.price).toFixed(2)}
+          {formatUsdAsInr(Number(currentProduct.price))}
         </p>
         <p style={{ fontSize: 14, color: currentProduct.stock > 0 ? "green" : "red", marginTop: 4 }}>
           {currentProduct.stock > 0 ? `${currentProduct.stock} in stock` : "Out of stock"}
