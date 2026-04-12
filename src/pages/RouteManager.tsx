@@ -15,10 +15,11 @@ import ManageProducts from "./SellerProgram";
 import JoinSellerProgram from "./SellerProgram/JoinSellerProgram";
 import { SellerOrderDetails } from "./SellerProgram/SellerOrderDetails";
 import { Profile } from "./Profile";
+import CategoryPage from "./Category";
 
-interface RouteManagerProps {}
+interface RouteManagerProps { }
 
-export const RouteManager: React.FC<RouteManagerProps> = ({}) => {
+export const RouteManager: React.FC<RouteManagerProps> = ({ }) => {
   // const {
   //   auth: { userType, provider, serviceType },
   //   loadingState,
@@ -41,6 +42,7 @@ export const RouteManager: React.FC<RouteManagerProps> = ({}) => {
         <Route path="/seller-order/:id" element={<SellerOrderDetails />} />
         <Route path="/product-details/:id" element={<ProductDetails />} />
         <Route path="/profile" element={<Profile />} />
+        <Route path="/category/:id" element={<CategoryPage />} />
 
         <Route path="/" element={<LandingPage />} />
         {/* <Route path="*" element={<NotFoundPage />} /> */}

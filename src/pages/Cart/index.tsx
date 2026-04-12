@@ -12,14 +12,14 @@ import { CollectPaymentApi } from "../../api/payment-api";
 import { MakePayment } from "../Payment";
 import { ColDiv, RowDiv } from "../../components/Misc/misc.styled";
 
-interface CartProps {}
+interface CartProps { }
 
 interface PaymentCredential {
   secret: string;
   publishableKey: string;
 }
 
-const CartPage: React.FC<CartProps> = ({}) => {
+const CartPage: React.FC<CartProps> = ({ }) => {
   const navigate = useNavigate();
 
   const [cartItems, setCartItems] = useState<CartModel[]>([]);
@@ -32,6 +32,7 @@ const CartPage: React.FC<CartProps> = ({}) => {
   const userReducer = useAppSelector((state) => state.userReducer);
 
   const profile = userReducer.userProfile;
+  const authToken = profile?.token || localStorage.getItem("token") || "";
 
   useEffect(() => {
     onGetCartItems();
@@ -42,7 +43,7 @@ const CartPage: React.FC<CartProps> = ({}) => {
   };
 
   const onInitPayment = async () => {
-    const { data, message } = await CollectPaymentApi(profile.token);
+    const { data, message } = await CollectPaymentApi(authToken);
     if (data) {
       console.log(data);
       const credential = data as PaymentCredential;
@@ -53,7 +54,8 @@ const CartPage: React.FC<CartProps> = ({}) => {
   };
 
   const onGetCartItems = async () => {
-    const { data, message } = await FetchCartItemsApi(profile.token);
+    if (!authToken) return;
+    const { data, message } = await FetchCartItemsApi(authToken);
     if (data) {
       setAppFee(Number(data.appFee));
       const items = data.cartItems as CartModel[];
@@ -272,7 +274,7 @@ const CartPage: React.FC<CartProps> = ({}) => {
         paddingTop: 20,
       }}
     >
-      {!profile.id ? (
+      {!authToken ? (
         <div
           style={{
             display: "flex",

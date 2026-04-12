@@ -26,16 +26,16 @@ const BrandLogo: React.FC<{ size?: number }> = ({ size = 36 }) => (
   <svg width={size * 3.2} height={size} viewBox="0 0 160 44" fill="none" xmlns="http://www.w3.org/2000/svg">
     {/* Icon mark */}
     <rect x="0" y="4" width="36" height="36" rx="10" fill="url(#grad1)" />
-    <path d="M18 12 L26 18 L18 24 L10 18 Z" fill="white" opacity="0.9"/>
-    <path d="M10 18 L18 24 L18 32 L10 26 Z" fill="white" opacity="0.6"/>
-    <path d="M26 18 L18 24 L18 32 L26 26 Z" fill="white" opacity="0.75"/>
+    <path d="M18 12 L26 18 L18 24 L10 18 Z" fill="white" opacity="0.9" />
+    <path d="M10 18 L18 24 L18 32 L10 26 Z" fill="white" opacity="0.6" />
+    <path d="M26 18 L18 24 L18 32 L26 26 Z" fill="white" opacity="0.75" />
     {/* Brand name */}
     <text x="46" y="20" fontFamily="'Sora', 'Plus Jakarta Sans', sans-serif" fontWeight="800" fontSize="16" fill="#1E1A2E">SWIFT</text>
     <text x="46" y="38" fontFamily="'Sora', 'Plus Jakarta Sans', sans-serif" fontWeight="400" fontSize="13" fill="#6C3CE1" letterSpacing="3">BAZAAR</text>
     <defs>
       <linearGradient id="grad1" x1="0" y1="0" x2="36" y2="36" gradientUnits="userSpaceOnUse">
-        <stop offset="0%" stopColor="#6C3CE1"/>
-        <stop offset="100%" stopColor="#3B82F6"/>
+        <stop offset="0%" stopColor="#6C3CE1" />
+        <stop offset="100%" stopColor="#3B82F6" />
       </linearGradient>
     </defs>
   </svg>
@@ -172,7 +172,7 @@ export const NavBar = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const profile = useAppSelector((state) => state.userReducer.userProfile);
-
+  const authToken = profile?.token || localStorage.getItem("token") || "";
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
 
@@ -182,7 +182,7 @@ export const NavBar = () => {
     const token = localStorage.getItem("token");
     if (token) {
       const { user } = await GetProfile(token);
-      if (user) dispatch(userLogin(user as UserModel));
+      if (user) dispatch(userLogin({ ...(user as UserModel), token } as UserModel));
     }
   };
 
@@ -279,12 +279,12 @@ export const NavBar = () => {
           maxWidth: 520,
           margin: "0 auto",
         }}>
-          <TxtSearch onChange={() => {}} placeholder="Search products…" />
+          <TxtSearch onChange={() => { }} placeholder="Search products…" />
         </div>
 
         <Typography component="div" sx={{ flexGrow: 1 }} />
 
-        {profile?.id ? authMenu() : guestMenu()}
+        {authToken ? authMenu() : guestMenu()}
       </Toolbar>
     </NavAppBar>
   );

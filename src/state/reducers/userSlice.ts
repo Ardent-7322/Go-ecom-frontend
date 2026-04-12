@@ -15,7 +15,10 @@ const userSlice = createSlice({
   reducers: {
     userLogin(state, action: PayloadAction<UserModel>) {
       const profileData = action.payload;
-      state.userProfile = profileData;
+      state.userProfile = {
+        ...state.userProfile,
+        ...profileData,
+      };
     },
   },
 });

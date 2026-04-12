@@ -19,6 +19,7 @@ export const ProductDetails = () => {
 
   const productReducer = useAppSelector((state) => state.productReducer);
   const profile = useAppSelector((state) => state.userReducer.userProfile);
+  const authToken = profile?.token || localStorage.getItem("token") || "";
 
   const { currentProduct } = productReducer;
 
@@ -38,7 +39,7 @@ export const ProductDetails = () => {
   };
 
   const onAddToCart = async () => {
-    if (!profile.id) {
+    if (!authToken) {
       toast("Please login to add items to cart", { type: "warning" });
       navigate("/login");
       return;

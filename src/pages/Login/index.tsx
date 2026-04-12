@@ -25,7 +25,7 @@ const LoginPage: React.FC = () => {
       localStorage.setItem("token", token);
       dispatch(userLogin({ token } as UserModel));
       const { user } = await GetProfile(token);
-      if (user) dispatch(userLogin(user as UserModel));
+      if (user) dispatch(userLogin({ ...(user as UserModel), token } as UserModel));
       navigate("/");
     } else {
       toast(message || "Login failed. Please check your credentials.", { type: "error" });
