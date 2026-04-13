@@ -6,11 +6,9 @@ import axios from "axios";
 export const AddToCartApi = async (productId: number, qty: number = 1) => {
   try {
     const api = axiosAuth();
-    // Send both field name variants to be safe with different backend versions
-    const response = await api.post(`${BASE_URL}/buyer/cart`, {
+    const response = await api.post(`${BASE_URL}/users/cart`, {
       product_id: productId,
       qty,
-      item_qty: qty,
     });
     return response.data;
   } catch (error: any) {
@@ -22,18 +20,29 @@ export const AddToCartApi = async (productId: number, qty: number = 1) => {
   }
 };
 
-export const FetchCartItemsApi = async (
-  token: string
-): Promise<ResponseModel> => {
+export const FetchCartItemsApi = async (token: string): Promise<ResponseModel> => {
   try {
     const auth = axiosAuth();
-    const response = await auth.get(`${BASE_URL}/buyer/cart`);
-    return response.data;
-  } catch (error: any) {
-    console.log("FetchCart error:", error?.response?.data || error);
+    const response = await auth.get(`${BASE_URL}/users/cart`);
+    const raw = response.data;
+    const cartItems = (raw?.cart || []).map((item: any) => ({
+      ...item,
+      item_qty: item.qty,           // backend sends qty, frontend expects item_qty
+      image_url: item.image_url,
+    }));
+    const totalPrice = cartItems.reduce(
+      (sum: number, item: any) => sum + Number(item.price) * Number(item.qty), 0
+    );
     return {
-      message: error?.response?.data?.message || "Failed to fetch cart",
+      message: raw.message,
+      data: {
+        cartItems,
+        appFee: 0,
+        totalPrice,
+      },
     };
+  } catch (error: any) {
+    return { message: error?.response?.data?.message || "Failed to fetch cart" };
   }
 };
 

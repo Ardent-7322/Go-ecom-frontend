@@ -34,17 +34,15 @@ const LandingPage: React.FC<LandingPageProps> = () => {
 
   const filteredProducts = useMemo(() => {
     if (!selectedCategoryId) return products;
-    return (products || []).filter((item) => {
-      const catId = String(item.category_id).trim();
-      const selId = String(selectedCategoryId).trim();
-      return catId === selId;
-    });
+    return (products || []).filter((item) =>
+      String(item.category_id) === String(selectedCategoryId)
+    );
   }, [products, selectedCategoryId]);
 
   const selectedCategoryName = useMemo(() => {
     if (!selectedCategoryId) return "All Products";
     const cat = (categories || []).find(
-      (item) => String(item._id) === String(selectedCategoryId)
+      (item) => String(item.id) === String(selectedCategoryId)
     );
     return cat?.name || "Selected Category";
   }, [categories, selectedCategoryId]);

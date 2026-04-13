@@ -40,20 +40,10 @@ const CategoryPage: React.FC = () => {
         if (!id || !products.length) return [];
 
         return products.filter(product => {
-            const catId = String(product.category_id).trim();
-            const paramId = String(id).trim();
-
-            if (catId === paramId) return true;
-
-            if (selectedCategory) {
-                if (catId === String(selectedCategory._id).trim()) return true;
-                if (catId === String(selectedCategory.id).trim()) return true;
-            }
-
-            return false;
+            // Backend sends category_id as number, id param is string
+            return String(product.category_id) === String(id);
         });
-    }, [products, id, selectedCategory]);
-
+    }, [products, id]);
     return (
         <div style={{ width: "92%", margin: "24px auto 60px" }}>
             <button

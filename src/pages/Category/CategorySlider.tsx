@@ -15,11 +15,9 @@ export const CategorySlider: React.FC<CategoryProps> = ({ cats, selectedCategory
 
   const handleCategoryClick = (item: CategoryModel) => {
     if (onSelectCategory) {
-      // Landing page inline filter
-      onSelectCategory(item._id);
+      onSelectCategory(String(item.id));  // numeric id, not _id
     } else {
-      // Navigate to dedicated category page
-      navigate(`/category/${item._id}`);
+      navigate(`/category/${item.id}`);   // numeric id
     }
   };
 
