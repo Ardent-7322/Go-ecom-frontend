@@ -44,11 +44,14 @@ const LandingPage: React.FC<LandingPageProps> = () => {
     const cat = (categories || []).find(
       (item) => String(item.id) === String(selectedCategoryId)
     );
-    return cat?.name || "Selected Category";
+    return cat?.name || "Products";
   }, [categories, selectedCategoryId]);
 
   return (
-    <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 16, paddingBottom: 60 }}>
+    <div style={{
+      display: "flex", flexDirection: "column",
+      alignItems: "center", gap: 14, paddingBottom: 60,
+    }}>
       <div style={{ width: "100%" }}>
         <DealsPage />
       </div>
@@ -62,14 +65,14 @@ const LandingPage: React.FC<LandingPageProps> = () => {
       <TopPrducts
         products={filteredProducts}
         title={selectedCategoryName}
-        subtitle={selectedCategoryId ? `Showing products in ${selectedCategoryName}` : undefined}
+        subtitle={selectedCategoryId ? `Filtered by category` : undefined}
       />
 
-      {/* Trust bar - minimal */}
+      {/* Footer trust bar */}
       <div style={{
         width: "92%", display: "flex", justifyContent: "space-around",
-        background: "#fff", borderRadius: 10, padding: "20px 24px",
-        border: "1px solid #EBEBEB", flexWrap: "wrap", gap: 12,
+        background: "#fff", borderRadius: 8, padding: "18px 24px",
+        border: "1px solid #e8e0d8", flexWrap: "wrap", gap: 12,
       }}>
         {[
           { title: "Free Shipping", sub: "On orders above ₹4,000" },
@@ -78,8 +81,8 @@ const LandingPage: React.FC<LandingPageProps> = () => {
           { title: "24/7 Support", sub: "Always here to help" },
         ].map((f, i) => (
           <div key={i} style={{ textAlign: "center" }}>
-            <p style={{ fontSize: 13, fontWeight: 700, margin: 0, color: "#1a1a1a" }}>{f.title}</p>
-            <p style={{ fontSize: 11, color: "#888", margin: "2px 0 0" }}>{f.sub}</p>
+            <p style={{ fontSize: 12, fontWeight: 600, margin: 0, color: "#1a1a1a" }}>{f.title}</p>
+            <p style={{ fontSize: 11, color: "#aaa", margin: "2px 0 0" }}>{f.sub}</p>
           </div>
         ))}
       </div>

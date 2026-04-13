@@ -1,19 +1,13 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-/* eslint-disable jsx-a11y/alt-text */
 import { Toolbar, Typography, Button, IconButton } from "@mui/material";
-import {
-  LeftIcon,
-  NavAppBar,
-  NavLink,
-  RightNav,
-} from "./navbar.styled";
+import { LeftIcon, NavAppBar, NavLink, RightNav } from "./navbar.styled";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import CartIcon from "@mui/icons-material/ShoppingCartOutlined";
 import PersonIcon from "@mui/icons-material/PersonOutlineOutlined";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import React, { useEffect } from "react";
-import { AppCSS, TxtSearch } from "./index";
+import { TxtSearch } from "./index";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { useAppSelector } from "../state/hooks";
@@ -21,81 +15,19 @@ import { userLogin } from "../state/reducers/userSlice";
 import { UserModel } from "../types";
 import { GetProfile } from "../api/user-api";
 
-// ── Inline SVG Logo ──────────────────────────────────────────────────────────
-const BrandLogo: React.FC<{ size?: number }> = ({ size = 36 }) => (
-  <svg width={size * 3.2} height={size} viewBox="0 0 160 44" fill="none" xmlns="http://www.w3.org/2000/svg">
-    {/* Icon mark */}
-    <rect x="0" y="4" width="36" height="36" rx="10" fill="url(#grad1)" />
-    <path d="M18 12 L26 18 L18 24 L10 18 Z" fill="white" opacity="0.9" />
-    <path d="M10 18 L18 24 L18 32 L10 26 Z" fill="white" opacity="0.6" />
-    <path d="M26 18 L18 24 L18 32 L26 26 Z" fill="white" opacity="0.75" />
-    {/* Brand name */}
-    <text x="46" y="20" fontFamily="'Sora', 'Plus Jakarta Sans', sans-serif" fontWeight="800" fontSize="16" fill="#1E1A2E">SWIFT</text>
-    <text x="46" y="38" fontFamily="'Sora', 'Plus Jakarta Sans', sans-serif" fontWeight="400" fontSize="13" fill="#6C3CE1" letterSpacing="3">BAZAAR</text>
-    <defs>
-      <linearGradient id="grad1" x1="0" y1="0" x2="36" y2="36" gradientUnits="userSpaceOnUse">
-        <stop offset="0%" stopColor="#6C3CE1" />
-        <stop offset="100%" stopColor="#3B82F6" />
-      </linearGradient>
-    </defs>
-  </svg>
+interface NavItemProps { title?: string; linkTo?: string; selected?: boolean; }
+export const NavItem: React.FC<NavItemProps> = ({ title, linkTo, selected }) => (
+  <NavLink style={{ border: selected ? "1px solid #e8ddd4" : "none" }} to={linkTo || "#"}>
+    {title}
+  </NavLink>
 );
 
-interface NavItemProps {
-  title?: string;
-  linkTo?: string;
-  selected?: boolean;
-  onClick?: Function;
-  id?: string;
-}
-
-export const NavItem: React.FC<NavItemProps> = ({ title, linkTo, selected }) => {
-  return (
-    <NavLink
-      style={{ border: selected ? "1px solid #E8E4F5" : "none" }}
-      to={linkTo ? linkTo : "#"}
-    >
-      {title && title}
-    </NavLink>
-  );
-};
-
-interface ProfileProps {
-  userType: string;
-}
-
-export const ProfileMenu: React.FC<ProfileProps> = ({ userType }) => {
+export const ProfileMenu: React.FC<{ userType: string }> = ({ userType }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const profile = useAppSelector((state) => state.userReducer.userProfile);
-
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
-
-  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    setAnchorEl(event.currentTarget);
-  };
-  const handleClose = () => setAnchorEl(null);
-
-  const sellerOptions = () => {
-    const type = userType?.toLowerCase();
-    if (type === "buyer") {
-      return (
-        <MenuItem onClick={() => { handleClose(); navigate("/seller-program"); }}
-          sx={{ fontSize: 14, gap: 1 }}>
-          🏪 Join Seller Program
-        </MenuItem>
-      );
-    } else if (type === "seller") {
-      return (
-        <MenuItem onClick={() => { handleClose(); navigate("/manage-products"); }}
-          sx={{ fontSize: 14, gap: 1 }}>
-          📦 Manage Products
-        </MenuItem>
-      );
-    }
-    return <></>;
-  };
 
   const displayName = profile?.first_name
     ? profile.first_name
@@ -103,65 +35,38 @@ export const ProfileMenu: React.FC<ProfileProps> = ({ userType }) => {
 
   return (
     <div>
-      <Button
-        onClick={handleClick}
-        sx={{
-          background: open ? AppCSS.PRIMARY_LIGHT : "transparent",
-          color: AppCSS.GRAY_DARK,
-          borderRadius: "24px",
-          padding: "6px 14px",
-          textTransform: "none",
-          fontSize: 14,
-          fontWeight: 600,
-          fontFamily: "'Plus Jakarta Sans', sans-serif",
-          border: `1px solid ${open ? AppCSS.PRIMARY : AppCSS.BORDER}`,
-          "&:hover": { background: AppCSS.PRIMARY_LIGHT, borderColor: AppCSS.PRIMARY },
-          display: "flex", alignItems: "center", gap: "6px",
-        }}
-      >
+      <Button onClick={(e) => setAnchorEl(e.currentTarget)} sx={{
+        color: "#1a1a1a", borderRadius: "6px", padding: "6px 14px",
+        textTransform: "none", fontSize: 13, fontWeight: 500,
+        fontFamily: "Inter, sans-serif",
+        border: "1px solid #e8ddd4", background: open ? "#f5ede4" : "#fff",
+        "&:hover": { background: "#f5ede4" },
+        display: "flex", alignItems: "center", gap: "6px",
+      }}>
         <div style={{
-          width: 28, height: 28, borderRadius: "50%",
-          background: AppCSS.GRAD_PRIMARY,
+          width: 24, height: 24, borderRadius: "50%", background: "#5c3d2e",
           display: "flex", alignItems: "center", justifyContent: "center",
-          color: "#fff", fontSize: 12, fontWeight: 700,
+          color: "#fff", fontSize: 11, fontWeight: 600,
         }}>
           {displayName[0]?.toUpperCase()}
         </div>
         {displayName}
-        <KeyboardArrowDownIcon sx={{ fontSize: 16 }} />
+        <KeyboardArrowDownIcon sx={{ fontSize: 15 }} />
       </Button>
 
-      <Menu
-        anchorEl={anchorEl}
-        open={open}
-        onClose={handleClose}
-        PaperProps={{
-          sx: {
-            mt: 1, borderRadius: "12px", minWidth: 200,
-            boxShadow: "0 8px 32px rgba(108,60,225,0.15)",
-            border: `1px solid ${AppCSS.BORDER}`,
-          }
-        }}
-      >
-        <MenuItem onClick={() => { handleClose(); navigate("/profile"); }}
-          sx={{ fontSize: 14, gap: 1, py: 1.2 }}>
-          👤 My Profile
-        </MenuItem>
-        <MenuItem onClick={() => { handleClose(); navigate("/orders"); }}
-          sx={{ fontSize: 14, gap: 1, py: 1.2 }}>
-          📋 My Orders
-        </MenuItem>
-        {sellerOptions()}
-        <MenuItem
-          onClick={() => {
-            localStorage.clear();
-            dispatch(userLogin({} as UserModel));
-            handleClose();
-            navigate("/");
-          }}
-          sx={{ fontSize: 14, gap: 1, py: 1.2, color: AppCSS.DANGER, borderTop: `1px solid ${AppCSS.BORDER}`, mt: 0.5 }}
-        >
-          🚪 Logout
+      <Menu anchorEl={anchorEl} open={open} onClose={() => setAnchorEl(null)}
+        PaperProps={{ sx: { mt: 1, borderRadius: "8px", minWidth: 180, boxShadow: "0 4px 20px rgba(0,0,0,0.08)", border: "1px solid #e8ddd4" } }}>
+        <MenuItem onClick={() => { setAnchorEl(null); navigate("/profile"); }} sx={{ fontSize: 13, py: 1.2, color: "#333" }}>Profile</MenuItem>
+        <MenuItem onClick={() => { setAnchorEl(null); navigate("/orders"); }} sx={{ fontSize: 13, py: 1.2, color: "#333" }}>My Orders</MenuItem>
+        {userType?.toLowerCase() === "buyer" && (
+          <MenuItem onClick={() => { setAnchorEl(null); navigate("/seller-program"); }} sx={{ fontSize: 13, py: 1.2, color: "#333" }}>Become a Seller</MenuItem>
+        )}
+        {userType?.toLowerCase() === "seller" && (
+          <MenuItem onClick={() => { setAnchorEl(null); navigate("/manage-products"); }} sx={{ fontSize: 13, py: 1.2, color: "#333" }}>Manage Products</MenuItem>
+        )}
+        <MenuItem onClick={() => { localStorage.clear(); dispatch(userLogin({} as UserModel)); setAnchorEl(null); navigate("/"); }}
+          sx={{ fontSize: 13, py: 1.2, color: "#c0392b", borderTop: "1px solid #f0e8e0", mt: 0.5 }}>
+          Logout
         </MenuItem>
       </Menu>
     </div>
@@ -173,8 +78,6 @@ export const NavBar = () => {
   const navigate = useNavigate();
   const profile = useAppSelector((state) => state.userReducer.userProfile);
   const authToken = profile?.token || localStorage.getItem("token") || "";
-  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-  const open = Boolean(anchorEl);
 
   useEffect(() => { fetchProfile(); }, []);
 
@@ -186,105 +89,44 @@ export const NavBar = () => {
     }
   };
 
-  const handleOpen = (e: any) => setAnchorEl(e.currentTarget);
-  const handleClose = () => setAnchorEl(null);
-
-  const guestMenu = () => (
-    <RightNav>
-      <Link to="/cart">
-        <IconButton sx={{
-          borderRadius: "20px", px: 2, py: 0.8,
-          border: `1px solid ${AppCSS.BORDER}`,
-          color: AppCSS.GRAY_DARK,
-          "&:hover": { background: AppCSS.PRIMARY_LIGHT, color: AppCSS.PRIMARY, borderColor: AppCSS.PRIMARY },
-        }}>
-          <CartIcon sx={{ fontSize: 20 }} />
-          <span style={{ fontSize: 14, fontWeight: 500, marginLeft: 6 }}>Cart</span>
-        </IconButton>
-      </Link>
-
-      <Button
-        onClick={handleOpen}
-        sx={{
-          background: AppCSS.GRAD_PRIMARY,
-          color: "#fff",
-          borderRadius: "24px",
-          px: 2.5,
-          py: 0.8,
-          textTransform: "none",
-          fontSize: 14,
-          fontWeight: 600,
-          fontFamily: "'Plus Jakarta Sans', sans-serif",
-          boxShadow: "0 4px 14px rgba(108,60,225,0.35)",
-          "&:hover": { boxShadow: "0 6px 20px rgba(108,60,225,0.45)", transform: "translateY(-1px)" },
-          display: "flex", alignItems: "center", gap: "6px",
-        }}
-      >
-        <PersonIcon sx={{ fontSize: 18 }} />
-        Sign In
-      </Button>
-
-      <Menu
-        anchorEl={anchorEl} open={open} onClose={handleClose}
-        PaperProps={{
-          sx: {
-            mt: 1, borderRadius: "12px", minWidth: 200,
-            boxShadow: "0 8px 32px rgba(108,60,225,0.15)",
-            border: `1px solid ${AppCSS.BORDER}`,
-          }
-        }}
-      >
-        <MenuItem onClick={() => { handleClose(); navigate("/login"); }}
-          sx={{ fontSize: 14, gap: 1, py: 1.2 }}>
-          🔑 Login
-        </MenuItem>
-        <MenuItem onClick={() => { handleClose(); navigate("/signup"); }}
-          sx={{ fontSize: 14, gap: 1, py: 1.2, fontWeight: 600, color: AppCSS.PRIMARY }}>
-          ✨ Create Account
-        </MenuItem>
-      </Menu>
-    </RightNav>
-  );
-
-  const authMenu = () => (
-    <RightNav>
-      <Link to="/cart">
-        <IconButton sx={{
-          borderRadius: "20px", px: 2, py: 0.8,
-          border: `1px solid ${AppCSS.BORDER}`,
-          color: AppCSS.GRAY_DARK,
-          "&:hover": { background: AppCSS.PRIMARY_LIGHT, color: AppCSS.PRIMARY, borderColor: AppCSS.PRIMARY },
-        }}>
-          <CartIcon sx={{ fontSize: 20 }} />
-          <span style={{ fontSize: 14, fontWeight: 500, marginLeft: 6 }}>Cart</span>
-        </IconButton>
-      </Link>
-      <ProfileMenu userType={profile?.user_type || ""} />
-    </RightNav>
-  );
-
   return (
     <NavAppBar position="sticky" elevation={0}>
-      <Toolbar sx={{ minHeight: "68px !important", px: 0 }}>
-        {/* Logo */}
-        <LeftIcon size="large" edge="start" aria-label="home" onClick={() => navigate("/")}>
-          <BrandLogo size={36} />
-        </LeftIcon>
+      <Toolbar sx={{ minHeight: "60px !important", px: 3 }}>
+        <div onClick={() => navigate("/")} style={{ cursor: "pointer", display: "flex", alignItems: "center", gap: 8, marginRight: 32 }}>
+          <div style={{ width: 28, height: 28, borderRadius: 6, background: "#5c3d2e", display: "flex", alignItems: "center", justifyContent: "center" }}>
+            <div style={{ width: 12, height: 12, background: "#fff", borderRadius: 2 }} />
+          </div>
+          <span style={{ fontSize: 15, fontWeight: 700, color: "#1a1a1a", letterSpacing: "-0.3px" }}>Swift Bazaar</span>
+        </div>
 
-        {/* Search */}
-        <div style={{
-          flex: 1,
-          display: "flex",
-          justifyContent: "center",
-          maxWidth: 520,
-          margin: "0 auto",
-        }}>
-          <TxtSearch onChange={() => { }} placeholder="Search products…" />
+        <div style={{ flex: 1, maxWidth: 440 }}>
+          <TxtSearch onChange={() => {}} placeholder="Search products..." />
         </div>
 
         <Typography component="div" sx={{ flexGrow: 1 }} />
 
-        {authToken ? authMenu() : guestMenu()}
+        <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+          <Link to="/cart">
+            <IconButton sx={{ borderRadius: "6px", px: 1.5, py: 0.8, border: "1px solid #e8ddd4", color: "#1a1a1a", background: "#fff", "&:hover": { background: "#f5ede4" } }}>
+              <CartIcon sx={{ fontSize: 18 }} />
+              <span style={{ fontSize: 13, fontWeight: 500, marginLeft: 5 }}>Cart</span>
+            </IconButton>
+          </Link>
+
+          {authToken ? (
+            <ProfileMenu userType={profile?.user_type || ""} />
+          ) : (
+            <Button onClick={() => navigate("/login")} sx={{
+              background: "#5c3d2e", color: "#fff", borderRadius: "6px", px: 2, py: 0.8,
+              textTransform: "none", fontSize: 13, fontWeight: 500, fontFamily: "Inter, sans-serif",
+              "&:hover": { background: "#3d2818" },
+              display: "flex", alignItems: "center", gap: "6px",
+            }}>
+              <PersonIcon sx={{ fontSize: 16 }} />
+              Sign In
+            </Button>
+          )}
+        </div>
       </Toolbar>
     </NavAppBar>
   );

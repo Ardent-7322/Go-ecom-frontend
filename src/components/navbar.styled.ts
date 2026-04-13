@@ -6,23 +6,17 @@ import { Link } from "react-router-dom";
 export const NavAppBar = styled(AppBar)`
   display: flex;
   width: 100%;
-  background: #ffffff;
-  min-height: 68px;
-  border-bottom: 1px solid #E8E4F5;
-  box-shadow: 0 2px 20px rgba(108, 60, 225, 0.08) !important;
+  background: #fff;
+  min-height: 60px;
+  border-bottom: 1px solid #e8ddd4;
+  box-shadow: none !important;
 `;
 
 export const LeftIcon = styled(IconButton)`
   margin-right: 0;
-  color: #1E1A2E;
-  padding: 4px 8px;
-  border-radius: 8px !important;
-
-  @media only screen and (min-width: 320px) { margin-left: 1%; }
-  @media only screen and (min-width: 480px) { margin-left: 1%; }
-  @media only screen and (min-width: 768px) { margin-left: 3%; }
-  @media only screen and (min-width: 992px) { margin-left: 6%; }
-  @media only screen and (min-width: 1200px) { margin-left: 8%; }
+  color: #1a1a1a;
+  padding: 4px 0;
+  border-radius: 6px !important;
 `;
 
 export const RightNav = styled(Box)`
@@ -32,7 +26,6 @@ export const RightNav = styled(Box)`
     align-items: center;
     justify-content: flex-end;
     gap: 8px;
-    padding-right: 5%;
   }
 `;
 
@@ -40,22 +33,16 @@ export const NavLink = styled(Link)`
   & {
     background: transparent;
     list-style: none;
-    color: #3D3557;
+    color: #555;
     text-decoration: none;
-    padding: 8px 18px;
-    height: 38px;
-    border-radius: 20px;
-    margin-right: 4px;
-    font-size: 14px;
+    padding: 6px 14px;
+    height: 34px;
+    border-radius: 6px;
+    font-size: 13px;
     font-weight: 500;
     display: flex;
     align-items: center;
-    transition: all 0.2s;
-
-    &:hover {
-      background: #EDE8FD;
-      color: #6C3CE1;
-    }
+    &:hover { background: #f5ede4; color: #1a1a1a; }
   }
 `;
 
@@ -64,15 +51,15 @@ export const NavLinkNormal = styled(Link)`
     display: flex;
     background: transparent;
     list-style: none;
-    color: #6C3CE1;
+    color: #5c3d2e;
     text-decoration: none;
-    padding: 7px 18px;
-    border-radius: 8px;
+    padding: 6px 14px;
+    border-radius: 6px;
     font-weight: 500;
   }
 `;
 
 export const LogoSmall = styled.img`
-  height: 38px;
+  height: 32px;
   width: auto;
 `;

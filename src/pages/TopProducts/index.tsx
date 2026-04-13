@@ -17,19 +17,19 @@ const ProductCard: React.FC<{ item: ProductModel }> = ({ item }) => {
     <div
       onClick={() => navigate(`/product-details/${item.id}`)}
       style={{
-        width: 200,
-        minWidth: 200,
-        borderRadius: 10,
+        width: 196,
+        minWidth: 196,
+        borderRadius: 8,
         background: "#fff",
-        border: "1px solid #EBEBEB",
+        border: "1px solid #e8e0d8",
         cursor: "pointer",
         overflow: "hidden",
         flexShrink: 0,
       }}
     >
       <div style={{
-        width: "100%", height: 160,
-        background: "#F7F7F7",
+        width: "100%", height: 156,
+        background: "#FAF7F4",
         display: "flex", alignItems: "center", justifyContent: "center",
         overflow: "hidden",
       }}>
@@ -41,32 +41,30 @@ const ProductCard: React.FC<{ item: ProductModel }> = ({ item }) => {
         />
       </div>
 
-      <div style={{ padding: "12px 14px 14px" }}>
+      <div style={{ padding: "12px 14px" }}>
         <p style={{
           fontSize: 13, fontWeight: 600, color: "#1a1a1a",
-          margin: 0, marginBottom: 4,
+          margin: "0 0 3px",
           overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap",
         }}>
           {item.name}
         </p>
         <p style={{
-          fontSize: 11, color: "#888", margin: 0, marginBottom: 10,
+          fontSize: 11, color: "#aaa", margin: "0 0 10px",
           overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap",
         }}>
           {item.description || "—"}
         </p>
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-          <span style={{ fontSize: 15, fontWeight: 700, color: "#1a1a1a" }}>
+          <span style={{ fontSize: 14, fontWeight: 700, color: "#1a1a1a" }}>
             {formatUsdAsInr(Number(item.price))}
           </span>
-          {item.stock !== undefined && (
-            <span style={{
-              fontSize: 10, fontWeight: 600,
-              color: item.stock > 0 ? "#16a34a" : "#dc2626",
-            }}>
-              {item.stock > 0 ? "In stock" : "Sold out"}
-            </span>
-          )}
+          <span style={{
+            fontSize: 10, fontWeight: 500,
+            color: item.stock > 0 ? "#2d7a4f" : "#c0392b",
+          }}>
+            {item.stock > 0 ? "In stock" : "Sold out"}
+          </span>
         </div>
       </div>
     </div>
@@ -78,12 +76,12 @@ export const TopPrducts: React.FC<TopProductsProps> = ({ products, title, subtit
     return (
       <div style={{
         width: "92%", background: "#fff",
-        borderRadius: 10, padding: "40px",
-        textAlign: "center", color: "#888",
-        border: "1px solid #EBEBEB",
+        borderRadius: 8, padding: "40px",
+        textAlign: "center",
+        border: "1px solid #e8e0d8",
       }}>
-        <p style={{ fontSize: 15, fontWeight: 600, margin: 0 }}>No products found</p>
-        <p style={{ fontSize: 13, marginTop: 6, color: "#aaa" }}>Check back soon for new arrivals.</p>
+        <p style={{ fontSize: 14, fontWeight: 600, color: "#555", margin: 0 }}>No products found</p>
+        <p style={{ fontSize: 12, marginTop: 6, color: "#aaa" }}>Check back soon for new arrivals.</p>
       </div>
     );
   }
@@ -92,27 +90,18 @@ export const TopPrducts: React.FC<TopProductsProps> = ({ products, title, subtit
     <div style={{
       width: "92%",
       background: "#fff",
-      borderRadius: 10,
-      padding: "24px",
-      border: "1px solid #EBEBEB",
+      borderRadius: 8,
+      padding: "20px",
+      border: "1px solid #e8e0d8",
     }}>
       {(title || subtitle) && (
-        <div style={{ marginBottom: 20 }}>
-          {title && (
-            <p style={{ fontSize: 16, fontWeight: 700, margin: 0, color: "#1a1a1a" }}>
-              {title}
-            </p>
-          )}
-          {subtitle && (
-            <p style={{ fontSize: 12, color: "#888", margin: "4px 0 0" }}>
-              {subtitle}
-            </p>
-          )}
+        <div style={{ marginBottom: 16 }}>
+          {title && <p style={{ fontSize: 15, fontWeight: 700, margin: 0, color: "#1a1a1a" }}>{title}</p>}
+          {subtitle && <p style={{ fontSize: 11, color: "#aaa", margin: "3px 0 0" }}>{subtitle}</p>}
         </div>
       )}
-
       <div style={{
-        display: "flex", flexDirection: "row", gap: 14,
+        display: "flex", gap: 12,
         overflowX: "auto", paddingBottom: 4,
         scrollbarWidth: "thin",
       }}>

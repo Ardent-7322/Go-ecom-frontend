@@ -3,126 +3,39 @@ import React from "react";
 interface DealItem {
   name: string;
   description: string;
-  badge?: string;
-  color1: string;
-  color2: string;
+  tag?: string;
 }
 
-interface DealsCardProps {
-  deal: DealItem;
-}
-
-export const DealsCard: React.FC<DealsCardProps> = ({ deal }) => {
-  const { name, description, badge, color1, color2 } = deal;
-
+export const DealsCard: React.FC<{ deal: DealItem }> = ({ deal }) => {
+  const { name, description, tag } = deal;
   return (
-    <div
-      style={{
-        width: "100%",
-        minHeight: 300,
-        background: `linear-gradient(135deg, ${color1} 0%, ${color2} 100%)`,
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "space-between",
-        padding: "60px 10%",
-        position: "relative",
-        overflow: "hidden",
-      }}
-    >
-      {/* Decorative circles */}
-      <div style={{
-        position: "absolute", right: "8%", top: "-60px",
-        width: 280, height: 280, borderRadius: "50%",
-        background: "rgba(255,255,255,0.08)",
-      }} />
-      <div style={{
-        position: "absolute", right: "20%", bottom: "-80px",
-        width: 200, height: 200, borderRadius: "50%",
-        background: "rgba(255,255,255,0.06)",
-      }} />
-      <div style={{
-        position: "absolute", left: "40%", top: "-40px",
-        width: 120, height: 120, borderRadius: "50%",
-        background: "rgba(255,255,255,0.05)",
-      }} />
-
-      {/* Content */}
-      <div style={{ maxWidth: 560, zIndex: 1 }}>
-        {badge && (
+    <div style={{
+      width: "100%", minHeight: 200,
+      background: "#2d1f14",
+      display: "flex", alignItems: "center",
+      padding: "48px 8%", position: "relative", overflow: "hidden",
+    }}>
+      <div style={{ position: "absolute", right: "10%", top: "50%", transform: "translateY(-50%)", width: 160, height: 160, borderRadius: "50%", background: "rgba(255,255,255,0.03)" }} />
+      <div style={{ position: "absolute", right: "22%", bottom: "-50px", width: 100, height: 100, borderRadius: "50%", background: "rgba(255,255,255,0.025)" }} />
+      <div style={{ maxWidth: 500, zIndex: 1 }}>
+        {tag && (
           <span style={{
-            display: "inline-block",
-            background: "rgba(255,255,255,0.22)",
-            color: "#fff",
-            fontSize: 13,
-            fontWeight: 700,
-            padding: "5px 14px",
-            borderRadius: 20,
-            marginBottom: 16,
-            backdropFilter: "blur(8px)",
-            border: "1px solid rgba(255,255,255,0.3)",
-            letterSpacing: 0.5,
-          }}>
-            {badge}
-          </span>
+            display: "inline-block", background: "rgba(193,127,74,0.25)",
+            color: "#c17f4a", fontSize: 11, fontWeight: 600,
+            padding: "3px 12px", borderRadius: 20, marginBottom: 14,
+            letterSpacing: 1, textTransform: "uppercase",
+            border: "1px solid rgba(193,127,74,0.3)",
+          }}>{tag}</span>
         )}
-        <h1 style={{
-          fontSize: "clamp(2rem, 4vw, 3.2rem)",
-          fontWeight: 800,
-          color: "#fff",
-          margin: "0 0 14px 0",
-          lineHeight: 1.1,
-          fontFamily: "'Sora', 'Plus Jakarta Sans', sans-serif",
-          textShadow: "0 2px 20px rgba(0,0,0,0.2)",
-        }}>
+        <h1 style={{ fontSize: "clamp(1.5rem, 2.5vw, 2.2rem)", fontWeight: 700, color: "#fff", margin: "0 0 10px", lineHeight: 1.2, letterSpacing: "-0.5px" }}>
           {name}
         </h1>
-        <p style={{
-          fontSize: "1.05rem",
-          color: "rgba(255,255,255,0.88)",
-          margin: "0 0 28px 0",
-          lineHeight: 1.6,
-          maxWidth: 440,
-        }}>
+        <p style={{ fontSize: 13, color: "rgba(255,255,255,0.45)", margin: "0 0 24px", lineHeight: 1.6, maxWidth: 360 }}>
           {description}
         </p>
-        <button
-          style={{
-            background: "#fff",
-            color: color1,
-            border: "none",
-            borderRadius: 30,
-            padding: "12px 32px",
-            fontSize: 15,
-            fontWeight: 700,
-            cursor: "pointer",
-            boxShadow: "0 8px 24px rgba(0,0,0,0.18)",
-            fontFamily: "'Plus Jakarta Sans', sans-serif",
-            transition: "all 0.2s",
-          }}
-          onMouseEnter={e => {
-            (e.target as HTMLButtonElement).style.transform = "translateY(-2px)";
-            (e.target as HTMLButtonElement).style.boxShadow = "0 12px 32px rgba(0,0,0,0.25)";
-          }}
-          onMouseLeave={e => {
-            (e.target as HTMLButtonElement).style.transform = "";
-            (e.target as HTMLButtonElement).style.boxShadow = "0 8px 24px rgba(0,0,0,0.18)";
-          }}
-        >
-          Shop Now →
+        <button style={{ background: "#c17f4a", color: "#fff", border: "none", borderRadius: 6, padding: "9px 22px", fontSize: 13, fontWeight: 600, cursor: "pointer" }}>
+          Shop Now
         </button>
-      </div>
-
-      {/* Right side pattern */}
-      <div style={{ zIndex: 1, display: "flex", flexDirection: "column", gap: 12, opacity: 0.7 }}>
-        {["⚡", "🎁", "🏷️"].map((e, i) => (
-          <div key={i} style={{
-            width: 54, height: 54, borderRadius: "50%",
-            background: "rgba(255,255,255,0.2)",
-            display: "flex", alignItems: "center", justifyContent: "center",
-            fontSize: 22, backdropFilter: "blur(4px)",
-            border: "1px solid rgba(255,255,255,0.3)",
-          }}>{e}</div>
-        ))}
       </div>
     </div>
   );

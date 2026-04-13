@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Sora:wght@400;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 
 *, *::before, *::after {
   box-sizing: border-box;
@@ -10,37 +10,18 @@ html, body {
   height: 100%;
   width: 100%;
   overflow-y: scroll;
-  background: #F4F2FB;
+  background: #FDF6EF;
   -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
 }
 
 body {
-  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
-  color: #1E1A2E;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  color: #1a1a1a;
 }
 
-/* Custom scrollbar */
-::-webkit-scrollbar { width: 6px; height: 6px; }
-::-webkit-scrollbar-track { background: #f0eef9; }
-::-webkit-scrollbar-thumb { background: #c4b8f0; border-radius: 3px; }
-::-webkit-scrollbar-thumb:hover { background: #6C3CE1; }
+::-webkit-scrollbar { width: 5px; height: 5px; }
+::-webkit-scrollbar-track { background: #f5ede4; }
+::-webkit-scrollbar-thumb { background: #d4b89a; border-radius: 3px; }
 
-/* Smooth transitions globally */
-a { transition: all 0.2s ease; }
-button { transition: all 0.2s ease; }
-
-@media print {
-  .qrlabel {
-    font-size: 30px;
-    text-transform: capitalize;
-    font-weight: 600;
-    margin-top: 150px;
-  }
-  .qrprint {
-    height: 600px;
-    font-family: Arial, Helvetica, sans-serif;
-    font-size: 16px;
-    font-weight: bold;
-  }
-}
+a { text-decoration: none; }
+button { font-family: inherit; }

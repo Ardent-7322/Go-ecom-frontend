@@ -6,24 +6,18 @@ const DealsPage = () => {
   const items = [
     {
       name: "Summer Sale",
-      description: "Up to 60% off on top picks. Limited time only — shop before it's gone.",
-      badge: "🔥 Hot Deal",
-      color1: "#6C3CE1",
-      color2: "#3B82F6",
+      description: "Up to 60% off on top picks. Limited time only.",
+      tag: "Sale",
     },
     {
       name: "New Arrivals",
       description: "Fresh products just dropped. Be the first to discover what's trending.",
-      badge: "✨ Just In",
-      color1: "#F97316",
-      color2: "#EF4444",
+      tag: "New",
     },
     {
-      name: "Mega Clearance",
+      name: "Clearance",
       description: "Massive discounts across all categories. Grab deals before stock runs out.",
-      badge: "⚡ Flash Sale",
-      color1: "#10B981",
-      color2: "#3B82F6",
+      tag: "Limited",
     },
   ];
 
@@ -34,6 +28,18 @@ const DealsPage = () => {
         interval={5000}
         navButtonsAlwaysVisible={false}
         indicators={true}
+        navButtonsProps={{
+          style: { display: "none" }
+        }}
+        indicatorContainerProps={{
+          style: { marginTop: "-28px", position: "relative", zIndex: 2 }
+        }}
+        indicatorIconButtonProps={{
+          style: { color: "rgba(255,255,255,0.3)", padding: "4px" }
+        }}
+        activeIndicatorIconButtonProps={{
+          style: { color: "#fff" }
+        }}
         sx={{ width: "100%" }}
       >
         {items.map((item, i) => (
